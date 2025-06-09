@@ -3,88 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Spotify Style - Mini Player</title>
+  <title>Ulang Tahun Diska</title>
   <style>
-    body {
+    * {
       margin: 0;
       padding: 0;
-      background-color: #000;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .spotify-card {
-      background-color: #121212;
-      border-radius: 15px;
-      width: 320px;
-      padding: 15px;
       color: white;
-      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      height: 100vh;
+      background: url('cover.jpg') no-repeat center center/cover;
+      position: relative;
     }
 
-    .cover {
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      border-radius: 10px;
+      height: 100%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 60%);
+      z-index: 1;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      height: 100%;
+      padding: 20px;
     }
 
     .info {
-      margin-top: 15px;
+      text-align: center;
+      margin-bottom: 10px;
     }
 
-    .title {
-      font-size: 16px;
+    .song-title {
+      font-size: 20px;
       font-weight: bold;
     }
 
     .artist {
       font-size: 14px;
-      color: #b3b3b3;
+      color: #ccc;
     }
 
     .controls {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-top: 15px;
+      gap: 30px;
+      margin: 15px 0;
     }
 
-    .controls button {
+    .btn {
+      font-size: 26px;
       background: none;
       border: none;
       color: white;
-      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: scale(1.2);
+    }
+
+    .timeline {
+      width: 100%;
+      max-width: 300px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12px;
+      color: #ccc;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      appearance: none;
+      height: 4px;
+      background: #444;
+      border-radius: 2px;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      appearance: none;
+      width: 10px;
+      height: 10px;
+      background: #1db954;
+      border-radius: 50%;
       cursor: pointer;
     }
 
-    .waveform {
-      margin-top: 15px;
-      height: 30px;
-      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Waveform.svg/512px-Waveform.svg.png') no-repeat center;
-      background-size: contain;
-    }
-
-    audio {
-      display: none;
+    .message {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      line-height: 1.5;
+      color: #eee;
+      padding: 10px;
+      background-color: rgba(0,0,0,0.3);
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="spotify-card">
-    <img src="cover.jpg" alt="Cover" class="cover">
+  <div class="overlay"></div>
+  <div class="content">
     <div class="info">
-      <div class="title">Seluruh Nafas Ini</div>
+      <div class="song-title">Seluruh Nafas Ini</div>
       <div class="artist">Last Child</div>
     </div>
+
     <div class="controls">
-      <button disabled>⏮</button>
-      <button id="playBtn">▶</button>
-      <button disabled>⏭</button>
+      <button class="btn" onclick="skip(-10)">⏮</button>
+      <button class="btn" id="playPause">▶</button>
+      <button class="btn" onclick="skip(10)">⏭</button>
     </div>
-    <div class="waveform"></div>
+
+    <div class="timeline">
+      <span id="currentTime">0:00</span>
+      <input type="range" id="progressBar" value="0">
+      <span id="duration">0:00</span>
+    </div>
+
+    <div class="message">
+      "Diska, kamu adalah lagu yang tak pernah bosan aku putar ulang.<br>
+      Di hari ulang tahunmu ini, aku cuma ingin bilang:<br>
+      Aku bersyukur kamu ada.<br>
+      Semoga kamu selalu bahagia, sehat, dan dikelilingi cinta — termasuk cinta dari aku. 💗"<br><br>
+      — Dari Wahyu
+    </div>
+
     <audio id="audio" src="lagu.mp3"></audio>
   </div>
 
   <script>
+    const audio = document.getElementById("audio");
+    const playPause = document.getElementById("playPause");
+    const progressBar = document.getElementById("progressBar");
+    const currentTime = document.getElementById("currentTime");
+    const duration = document.getElementById("duration");
+
+    playPause.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playPause.textContent = "⏸";
+      } else {
+        audio.pause();
+        playPause.textContent = "▶";
+      }
+    });
+
+    function skip(seconds) {
+      audio.currentTime += seconds;
+    }
+
+    audio.addEventListener("loadedmetadata", () => {
+      duration.textContent = formatTime(audio.duration);
+      progressBar.max = Math.floor(audio.duration);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      progressBar.value = Math.floor(audio.currentTime);
+      currentTime.textContent = formatTime(audio.currentTime);
+    });
+
+    progressBar.addEventListener("input", () => {
+      audio.currentTime = progressBar.value;
+    });
+
+    function formatTime(time) {
+      const minutes = Math.floor(time / 60);
+      const seconds = Math.floor(time % 60).toString().padStart(2, "0");
+      return ${minutes}:${seconds};
+    }
+  </script>
+</body>
+</html>
