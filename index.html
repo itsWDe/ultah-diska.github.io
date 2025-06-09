@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ulang Tahun Cinta</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      width: 320px;
+      text-align: center;
+    }
+
+    .cover {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .song-info {
+      margin-top: 15px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .artist {
+      font-size: 14px;
+      color: #b3b3b3;
+    }
+
+    .controls {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .play-btn {
+      background-color: #1db954;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 28px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .play-btn:hover {
+      background-color: #1ed760;
+    }
+
+    .wave {
+      margin-top: 15px;
+      height: 30px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Waveform.svg/512px-Waveform.svg.png') no-repeat center;
+      background-size: cover;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #ddd;
+      line-height: 1.5;
+      font-style: italic;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="cover.jpg" alt="Foto Kita" class="cover">
+    <div class="song-info">
+      <div class="title">Seluruh Nafas Ini</div>
+      <div class="artist">Untukmu yang sedang bertambah usia 🎂</div>
+    </div>
+    <div class="controls">
+      <button id="playBtn" class="play-btn">▶</button>
+      <audio id="audio" src="lagu.mp3"></audio>
+    </div>
+    <div class="wave"></div>
+    <div class="message">
+      "Selamat ulang tahun, sayang.  
+      Di setiap detik lagu ini, ada doa dan cinta untukmu.  
+      Semoga kamu bahagia selalu, seperti aku saat bersamamu." 💖
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = '⏸';
+      } else {
+        audio.pause();
+        playBtn.textContent = '▶';
+      }
+    });
+  </script>
+</body>
+</html>
