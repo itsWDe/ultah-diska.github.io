@@ -145,46 +145,18 @@
     <audio id="audio" src="lagu.mp3"></audio>
   </div>
 
-  <script>
-    const audio = document.getElementById("audio");
-    const playPause = document.getElementById("playPause");
-    const progressBar = document.getElementById("progressBar");
-    const currentTime = document.getElementById("currentTime");
-    const duration = document.getElementById("duration");
+     const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
 
-    playPause.addEventListener("click", () => {
+    playBtn.addEventListener('click', () => {
       if (audio.paused) {
         audio.play();
-        playPause.textContent = "⏸";
+        playBtn.textContent = '⏸';
       } else {
         audio.pause();
-        playPause.textContent = "▶";
+        playBtn.textContent = '▶';
       }
     });
-
-    function skip(seconds) {
-      audio.currentTime += seconds;
-    }
-
-    audio.addEventListener("loadedmetadata", () => {
-      duration.textContent = formatTime(audio.duration);
-      progressBar.max = Math.floor(audio.duration);
-    });
-
-    audio.addEventListener("timeupdate", () => {
-      progressBar.value = Math.floor(audio.currentTime);
-      currentTime.textContent = formatTime(audio.currentTime);
-    });
-
-    progressBar.addEventListener("input", () => {
-      audio.currentTime = progressBar.value;
-    });
-
-    function formatTime(time) {
-      const minutes = Math.floor(time / 60);
-      const seconds = Math.floor(time % 60).toString().padStart(2, "0");
-      return ${minutes}:${seconds};
-    }
   </script>
 </body>
 </html>
