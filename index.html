@@ -3,27 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ulang Tahun Cinta</title>
+  <title>Spotify Style - Mini Player</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background-color: #121212;
+      background-color: #000;
       font-family: 'Segoe UI', sans-serif;
-      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .card {
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    .spotify-card {
+      background-color: #121212;
+      border-radius: 15px;
       width: 320px;
-      text-align: center;
+      padding: 15px;
+      color: white;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
     }
 
     .cover {
@@ -31,12 +30,12 @@
       border-radius: 10px;
     }
 
-    .song-info {
+    .info {
       margin-top: 15px;
     }
 
     .title {
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
     }
 
@@ -46,41 +45,25 @@
     }
 
     .controls {
-      margin-top: 15px;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      margin-top: 15px;
     }
 
-    .play-btn {
-      background-color: #1db954;
+    .controls button {
+      background: none;
       border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 28px;
       color: white;
+      font-size: 24px;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
 
-    .play-btn:hover {
-      background-color: #1ed760;
-    }
-
-    .wave {
+    .waveform {
       margin-top: 15px;
       height: 30px;
       background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Waveform.svg/512px-Waveform.svg.png') no-repeat center;
-      background-size: cover;
-    }
-
-    .message {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #ddd;
-      line-height: 1.5;
-      font-style: italic;
+      background-size: contain;
     }
 
     audio {
@@ -89,37 +72,19 @@
   </style>
 </head>
 <body>
-  <div class="card">
-    <img src="cover.jpg" alt="Foto Kita" class="cover">
-    <div class="song-info">
+  <div class="spotify-card">
+    <img src="cover.jpg" alt="Cover" class="cover">
+    <div class="info">
       <div class="title">Seluruh Nafas Ini</div>
-      <div class="artist">Untukmu yang sedang bertambah usia 🎂</div>
+      <div class="artist">Last Child</div>
     </div>
     <div class="controls">
-      <button id="playBtn" class="play-btn">▶</button>
-      <audio id="audio" src="lagu.mp3"></audio>
+      <button disabled>⏮</button>
+      <button id="playBtn">▶</button>
+      <button disabled>⏭</button>
     </div>
-    <div class="wave"></div>
-    <div class="message">
-      "Selamat ulang tahun, sayang.  
-      Di setiap detik lagu ini, ada doa dan cinta untukmu.  
-      Semoga kamu bahagia selalu, seperti aku saat bersamamu." 💖
-    </div>
+    <div class="waveform"></div>
+    <audio id="audio" src="lagu.mp3"></audio>
   </div>
 
   <script>
-    const audio = document.getElementById('audio');
-    const playBtn = document.getElementById('playBtn');
-
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.textContent = '⏸';
-      } else {
-        audio.pause();
-        playBtn.textContent = '▶';
-      }
-    });
-  </script>
-</body>
-</html>
